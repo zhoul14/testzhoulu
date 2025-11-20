@@ -414,14 +414,20 @@
     });
     resizeCanvas();
 
-    // 等比例缩放的半径函数
+    // ✅ 改小球尺寸 + 增大缝隙的等比例半径函数
     function calculateRadius(val) {
-        var scale = canvas.width / 430; // 以 ~iPhone 12 宽度为基准
-        var baseSize = 18 * scale;
-        var logFactor = 4.5 * scale;
+        var scale = canvas.width / 430;  // 以 ~iPhone 12 宽度为基准
+
+        // 基础半径和增长幅度都比之前更小
+        var baseSize = 10 * scale;
+        var logFactor = 2.5 * scale;
+
         var r = baseSize + Math.log(val + 1) * logFactor;
-        // 控制最大半径，不要遮满一整条路
-        var maxR = (canvas.width / LANES_COUNT / 2) * 0.8;
+
+        // 最大半径从 0.8 缩到 0.5 → 每条道的空隙明显变大
+        var laneHalf = canvas.width / LANES_COUNT / 2;
+        var maxR = laneHalf * 0.5;  // 原来是 0.8
+
         return Math.min(r, maxR);
     }
 
